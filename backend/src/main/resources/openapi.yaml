@@ -23,5 +23,52 @@ paths:
                   message:
                     type: string
                     example: Hello World
-        '500':
+        '401':
           description: Internal server error
+  /land:
+    post:
+      tags:
+        - Land
+      summary: Create a land record
+      description: Land details sent from frontend are used to create a record
+      operationId: createLand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Land'
+      responses:
+        '200':
+          description: Land record successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Land'
+        '500':
+          description: Invalid Input
+
+components:
+  schemas:
+    Land:
+      type: object
+      description: Land created on the frontend level containing all details
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        location:
+          type: string
+        surface:
+          type: number
+        usageDesc:
+          type: string
+        price:
+          type: integer
+        contact:
+          type: string
+        ownerHistory:
+          type: array
+          items:
+            type: string

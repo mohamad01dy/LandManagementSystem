@@ -24,4 +24,106 @@ paths:
                     type: string
                     example: Hello World
         '500':
+<<<<<<< Updated upstream
           description: Internal server error
+=======
+          description: Invalid Input
+  /user:
+    post:
+      tags:
+        - User
+      summary: Create a new User
+      description: User details sent from frontend are used to create a new user
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '500':
+          description: Invalid Input
+  /auth/login:
+    post:
+      operationId: login
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+
+components:
+  schemas:
+    Land:
+      type: object
+      description: Land created on the frontend level containing all details
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        location:
+          type: string
+        surface:
+          type: number
+          format: float
+        usageDescr:
+          type: string
+        price:
+          type: integer
+        contact:
+          type: string
+        ownerHistory:
+          type: array
+          items:
+            type: string
+    User:
+      type: object
+      description: User and owner of properties
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        age:
+          type: integer
+        address:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+>>>>>>> Stashed changes

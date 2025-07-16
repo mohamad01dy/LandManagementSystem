@@ -24,10 +24,7 @@ paths:
                     type: string
                     example: Hello World
         '500':
-<<<<<<< Updated upstream
           description: Internal server error
-=======
-          description: Invalid Input
   /user:
     post:
       tags:
@@ -126,4 +123,3 @@ components:
       properties:
         token:
           type: string
->>>>>>> Stashed changes

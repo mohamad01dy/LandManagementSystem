@@ -7,6 +7,8 @@ info:
 paths:
   /test:
     get:
+      security:
+        - bearerAuth: [ ]
       tags:
         - test
       summary: say hello
@@ -67,6 +69,11 @@ paths:
                 $ref: '#/components/schemas/LoginResponse'
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Land:
       type: object
@@ -123,3 +130,5 @@ components:
       properties:
         token:
           type: string
+security:
+  - bearerAuth: []

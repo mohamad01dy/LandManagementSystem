@@ -1,9 +1,7 @@
 package com.land.LandManagement.domain.tables;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -35,10 +33,6 @@ public class User {
 
     public String getUsername() {
         return this.name;
-    }
-
-    public String getPassword() {
-        return this.password;
     }
 
 }

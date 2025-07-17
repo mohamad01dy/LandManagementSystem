@@ -5,7 +5,10 @@ import com.land.backend.dto.LandDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+
+@Mapper
 public interface LandMapper {
     LandMapper MAPPER = Mappers.getMapper(LandMapper.class);
 

@@ -5,7 +5,11 @@ import com.land.backend.dto.UserDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+
+
+@Mapper
 public interface UserMapper {
     UserMapper MAPPER = Mappers.getMapper(UserMapper.class);
 

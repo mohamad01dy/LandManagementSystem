@@ -35,6 +35,9 @@ public final class Land {
     @Column (name = "contact")
     private String contact;
 
-    @Column (name = "owner_history")
+    @ElementCollection
+    @CollectionTable(name = "land_owner_history", joinColumns = @JoinColumn(name = "land_id"))
+    @Column(name = "owner")
     private List<String> ownerHistory;
+
 }

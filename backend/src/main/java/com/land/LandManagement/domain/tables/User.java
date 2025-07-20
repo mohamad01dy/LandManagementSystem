@@ -31,6 +31,22 @@ public class User {
     @Column (name = "password")
     private String password;
 
+    // Lands currently owned
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Land> lands;
+
+    // Ownership history (past and current)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<OwnershipHistory> ownershipHistory;
+
+    // Buy requests sent by this user
+    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL)
+    private List<BuyRequest> sentBuyRequests;
+
+    // Buy requests received by this user
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    private List<BuyRequest> receivedBuyRequests;
+
     public String getUsername() {
         return this.name;
     }

@@ -27,10 +27,10 @@ paths:
                     example: Hello World
         '500':
           description: Internal server error
-  /user:
+  /auth/register:
     post:
       tags:
-        - User
+        - SignUp
       summary: Create a new User
       description: User details sent from frontend are used to create a new user
       operationId: createUser
@@ -94,10 +94,12 @@ components:
           type: integer
         contact:
           type: string
-        ownerHistory:
+        ownershipHistory:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/OwnershipHistory'
+        owner:
+          $ref: '#/components/schemas/User'
     User:
       type: object
       description: User and owner of properties
@@ -114,6 +116,49 @@ components:
           type: string
         password:
           type: string
+        lands:
+          type: array
+          items:
+            $ref: '#/components/schemas/Land'
+        ownershipHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/OwnershipHistory'
+        sentBuyRequests:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyRequest'
+        receivedBuyRequests:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyRequest'
+    OwnershipHistory:
+      type: object
+      description: owners sequence of a specific land
+      properties:
+        historyId:
+          type: integer
+        orderNumber:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/User'
+        land:
+          $ref: '#/components/schemas/Land'
+    BuyRequest:
+      type: object
+      description: sent and received land buy requests
+      properties:
+        requestId:
+          type: integer
+        status:
+          type: string
+        buyer:
+          $ref: '#/components/schemas/User'
+        seller:
+          $ref: '#/components/schemas/User'
+        land:
+          $ref: '#/components/schemas/Land'
+
     LoginRequest:
       type: object
       required:

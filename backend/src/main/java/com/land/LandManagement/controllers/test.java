@@ -1,11 +1,12 @@
 package com.land.LandManagement.controllers;
 
+import com.land.backend.api.TestApi;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class test {
+public class test implements TestApi {
 
     @GetMapping
     public ResponseEntity<String> testing() {

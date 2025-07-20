@@ -35,9 +35,13 @@ public final class Land {
     @Column (name = "contact")
     private String contact;
 
-    @ElementCollection
-    @CollectionTable(name = "land_owner_history", joinColumns = @JoinColumn(name = "land_id"))
-    @Column(name = "owner")
-    private List<String> ownerHistory;
+    // Many ownership history records linked to this land
+    @OneToMany(mappedBy = "land", cascade = CascadeType.ALL)
+    private List<OwnershipHistory> ownershipHistory;
+
+    // Current owner
+    @ManyToOne
+    @JoinColumn(name = "owner_id") // foreign key in the land table
+    private User owner;
 
 }

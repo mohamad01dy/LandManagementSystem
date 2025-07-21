@@ -18,13 +18,9 @@ paths:
         '200':
           description: Successful hello response
           content:
-            application/json:
+            text/plain:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Hello World
+                type: string
         '500':
           description: Internal server error
   /auth/register:
@@ -67,6 +63,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginResponse'
+  /user:
+    put:
+      tags:
+        - User
+      summary: update an existing User
+      description: User details sent from frontend are used to update an existing User
+      operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '204':
+          description: User successfully updated
+        '404':
+          description: User to be updated not found
+  /user/{id}:
+    get:
+      tags:
+        - User
+      summary: Get an existing User
+      description: Get an existing User by its id
+      operationId: getUser
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the brand to retrieve
+      responses:
+        '200':
+          description: User successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
 
 components:
   securitySchemes:

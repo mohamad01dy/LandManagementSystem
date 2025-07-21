@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class test implements TestApi {
 
-    @GetMapping
-    public ResponseEntity<String> testing() {
+    @GetMapping("/test")
+    public ResponseEntity<String> sayHello() {
         return ResponseEntity.ok("Backend is working");
     }
 

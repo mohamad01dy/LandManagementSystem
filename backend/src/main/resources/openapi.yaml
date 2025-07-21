@@ -88,7 +88,7 @@ paths:
         - User
       summary: Get an existing User
       description: Get an existing User by its id
-      operationId: getUser
+      operationId: getUserById
       parameters:
         - in: path
           name: id
@@ -174,12 +174,12 @@ components:
           type: integer
         contact:
           type: string
-        ownershipHistory:
+        ownershipHistoryIds:
           type: array
           items:
-            $ref: '#/components/schemas/OwnershipHistory'
-        owner:
-          $ref: '#/components/schemas/User'
+            type: integer
+        ownerId:
+          type: integer
     User:
       type: object
       description: User and owner of properties
@@ -196,22 +196,23 @@ components:
           type: string
         password:
           type: string
-        lands:
+        landIds:
           type: array
           items:
-            $ref: '#/components/schemas/Land'
-        ownershipHistory:
+            type:
+              integer
+        ownershipHistoryIds:
           type: array
           items:
-            $ref: '#/components/schemas/OwnershipHistory'
-        sentBuyRequests:
+            type: integer
+        sentBuyRequestIds:
           type: array
           items:
-            $ref: '#/components/schemas/BuyRequest'
-        receivedBuyRequests:
+            type: integer
+        receivedBuyRequestIds:
           type: array
           items:
-            $ref: '#/components/schemas/BuyRequest'
+            type: integer
     OwnershipHistory:
       type: object
       description: owners sequence of a specific land
@@ -232,12 +233,12 @@ components:
           type: integer
         status:
           type: string
-        buyer:
-          $ref: '#/components/schemas/User'
-        seller:
-          $ref: '#/components/schemas/User'
-        land:
-          $ref: '#/components/schemas/Land'
+        buyerId:
+          type: integer
+        sellerId:
+          type: integer
+        landId:
+          type: integer
 
     LoginRequest:
       type: object

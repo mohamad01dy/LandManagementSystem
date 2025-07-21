@@ -1,8 +1,6 @@
 package com.land.LandManagement.services;
 
-import com.land.LandManagement.domain.tables.Land;
 import com.land.LandManagement.domain.tables.User;
-import com.land.LandManagement.repositories.LandRepository;
 import com.land.LandManagement.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +31,7 @@ public class UserService {
         throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists with this email");
     }
 
-    public User getUser(Integer id) {
+    public User getUserById(Integer id) {
 
         // Get email from the token
         String authenticatedEmail = SecurityContextHolder.getContext().getAuthentication().getName();

@@ -4,11 +4,12 @@ info:
   version: 1.0.0
   description: Basic API description
 
+security:
+  - bearerAuth: [ ]
+
 paths:
   /test:
     get:
-      security:
-        - bearerAuth: [ ]
       tags:
         - test
       summary: say hello
@@ -104,6 +105,48 @@ paths:
                 $ref: '#/components/schemas/User'
         '404':
           description: User not found
+  /buy-request:
+    post:
+      tags:
+        - BuyRequest
+      summary: create a buy request
+      description: the buyer creates a buy request to send it to the owner
+      operationId: createBuyRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyRequest'
+      responses:
+        '200':
+          description: the buy-request is successfully created/sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyRequest'
+        '500':
+          description: error
+  /buy-requests/sent:
+    get:
+      tags:
+        - BuyRequest
+      summary: get all of buy-requests
+      description: return an array of buy-requests send from this user
+      operationId: getSentBuyRequests
+      responses:
+        '200':
+          description: List of sent buy-requests successfully returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BuyRequest'
+        '401':
+          description: Unauthorized – token is missing or invalid
+        '500':
+          description: Server error
 
 components:
   securitySchemes:
@@ -212,5 +255,3 @@ components:
       properties:
         token:
           type: string
-security:
-  - bearerAuth: []

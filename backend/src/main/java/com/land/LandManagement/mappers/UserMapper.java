@@ -5,11 +5,8 @@ import com.land.backend.dto.UserDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 
-
-@Mapper
+@Mapper(uses = {LandMapper.class, BuyRequestMapper.class})
 public interface UserMapper {
     UserMapper MAPPER = Mappers.getMapper(UserMapper.class);
 

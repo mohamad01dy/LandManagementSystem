@@ -23,6 +23,7 @@ public class UserService {
 
     public User createUser(User user) {
         //Check if user already exists
+        user.setId(null);
         if (userRepository.findByEmail(user.getEmail()).equals(Optional.empty())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userRepository.save(user);
@@ -42,7 +43,7 @@ public class UserService {
 
         // Check if the authenticated user is the owner
         if (!targetUser.getEmail().equals(authenticatedEmail)) {
-            throw new AccessDeniedException("You are not allowed to update this user.");
+            throw new AccessDeniedException("You are not allowed to get other user record.");
         }
         return userRepository.getReferenceById(id);
     }
@@ -58,10 +59,13 @@ public class UserService {
 
         // Check if the authenticated user is the owner
         if (!targetUser.getEmail().equals(authenticatedEmail)) {
-            throw new AccessDeniedException("You are not allowed to update this user.");
+            throw new AccessDeniedException("You are not allowed to fetch other users' data.");
         }
 
+        //Hashed code, user can't change neither his nor his email
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setId(targetUser.getId());
+        user.setEmail(targetUser.getEmail());
         userRepository.save(user);
     }
 

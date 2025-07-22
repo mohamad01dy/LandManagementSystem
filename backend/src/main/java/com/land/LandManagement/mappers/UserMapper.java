@@ -25,7 +25,6 @@ public interface UserMapper {
     UserDto map (User entity);
 
     // For reverse mapping, you need to fetch entities from their IDs
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "lands", ignore = true) // Will be set manually
     @Mapping(target = "ownershipHistory", ignore = true)
     @Mapping(target = "sentBuyRequests", ignore = true)

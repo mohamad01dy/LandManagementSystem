@@ -17,7 +17,7 @@ public interface BuyRequestMapper {
 
 
     @Mapping(target = "buyerId", expression = "java(entity.getBuyer().getId())")
-    @Mapping(target = "sellerId", expression = "java(entity.getSeller().getId())")
+    @Mapping(target = "sellerId", expression = "java(entity.getSeller() == null ? null : entity.getSeller().getId())")
     @Mapping(target = "landId", expression = "java(entity.getLand().getId())")
     BuyRequestDto map(BuyRequest entity);
 

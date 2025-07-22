@@ -16,11 +16,11 @@ public interface LandMapper {
     @Mapping(target = "ownershipHistoryIds",
         expression = "java(entity.getOwnershipHistory() == null ? null : entity.getOwnershipHistory().stream().map(com.land.LandManagement.domain.tables.OwnershipHistory::getHistoryId).toList())")
     @Mapping(target = "ownerId",
-        expression = "java(entity.getOwner().getId())")
+        expression = "java(entity.getOwner() == null ? null : entity.getOwner().getId())")
     LandDto map (Land entity);
 
 
-    @Mapping(target = "owner", expression = "java(userService.getUserById(dto.getOwnerId()))")
-    @Mapping(target = "ownershipHistory", expression = "java(dto.getOwnershipHistoryIds() == null ? null : dto.getOwnershipHistoryIds().stream().map(ownershipHistoryService::getHistoryById).toList())")
+    @Mapping(target = "owner", expression = "java(dto.getOwnerId() == null ? null : userService.getUserById(dto.getOwnerId()))")
+    @Mapping(target = "ownershipHistory", expression = "java(dto.getOwnershipHistoryIds() == null ? null : dto.getOwnershipHistoryIds().stream().map(ownershipHistoryService::getOwnershipHistoryById).toList())")
     Land map (LandDto dto, @Context UserService userService, @Context OwnershipHistoryService ownershipHistoryService);
 }

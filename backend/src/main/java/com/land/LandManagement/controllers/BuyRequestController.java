@@ -7,6 +7,7 @@ import com.land.LandManagement.services.LandService;
 import com.land.LandManagement.services.UserService;
 import com.land.backend.api.BuyRequestApi;
 import com.land.backend.dto.BuyRequestDto;
+import com.land.backend.dto.UpdateRequestStatusRequestDto;
 import org.mapstruct.Context;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,5 +43,17 @@ public class BuyRequestController implements BuyRequestApi {
     public ResponseEntity<List<BuyRequestDto>> getSentBuyRequests() {
         List<BuyRequestDto>  sentBuyRequests = buyRequestService.getSentBuyRequests();
         return new ResponseEntity<>(sentBuyRequests, OK);
+    }
+
+    @Override
+    public ResponseEntity<List<BuyRequestDto>> getReceivedBuyRequests() {
+        List<BuyRequestDto> receivedBuyRequests = buyRequestService.getReceivedBuyRequests();
+        return new ResponseEntity<>(receivedBuyRequests, OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> updateRequestStatus(Integer id, UpdateRequestStatusRequestDto updateRequestStatusRequestDto) {
+        buyRequestService.updateRequestStatus(id, updateRequestStatusRequestDto);
+        return ResponseEntity.noContent().build();
     }
 }

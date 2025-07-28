@@ -44,4 +44,8 @@ public class LandService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return  targetUser.getLands();
     }
+
+    public List<Land> getAvailableLands() {
+        return landRepository.findAll();
+    }
 }

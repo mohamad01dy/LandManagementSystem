@@ -41,4 +41,10 @@ public class LandController implements LandApi {
         LandDto createdLand = LandMapper.MAPPER.map(landService.createLand(land));
         return  ResponseEntity.ok(createdLand);
     }
+
+    @Override
+    public ResponseEntity<List<LandDto>> getMyLands() {
+        List<LandDto> myLands = MAPPER.toDto(landService.getMyLands());
+        return ResponseEntity.ok(myLands);
+    }
 }

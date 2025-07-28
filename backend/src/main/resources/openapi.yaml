@@ -215,6 +215,21 @@ paths:
             application/json:
               schema:
                   $ref: '#/components/schemas/Land'
+    get:
+      tags:
+        - Land
+      summary: Get all Land records
+      description: Retrieve a list of all lands for this user
+      operationId: getMyLands
+      responses:
+        '200':
+          description: List of land records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Land'
   /land/{id}/ownership-history:
     get:
       tags:

@@ -9,6 +9,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper(uses = {UserMapper.class, BuyRequestMapper.class})
 public interface LandMapper {
     LandMapper MAPPER = Mappers.getMapper(LandMapper.class);
@@ -23,4 +25,6 @@ public interface LandMapper {
     @Mapping(target = "owner", expression = "java(dto.getOwnerId() == null ? null : userService.getUserById(dto.getOwnerId()))")
     @Mapping(target = "ownershipHistory", expression = "java(dto.getOwnershipHistoryIds() == null ? null : dto.getOwnershipHistoryIds().stream().map(ownershipHistoryService::getOwnershipHistoryById).toList())")
     Land map (LandDto dto, @Context UserService userService, @Context OwnershipHistoryService ownershipHistoryService);
+
+    List<LandDto> toDto (List<Land> entity);
 }

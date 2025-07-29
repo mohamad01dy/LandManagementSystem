@@ -50,6 +50,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/auth/login",
                                 "/auth/register",
+                                "/auth/refresh",
                                 "/land",
                                 "/buy-request",
                                 "/v3/api-docs/**",

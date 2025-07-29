@@ -10,7 +10,7 @@ import java.util.Date;
 @Component
 public class JWTUtil {
 
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final Key key = Keys.hmacShaKeyFor("my-very-secret-key-1234567890123456".getBytes());
     private final long expirationMs = 60 * 1000L; // 1 day
 
     public String generateToken(String username) {

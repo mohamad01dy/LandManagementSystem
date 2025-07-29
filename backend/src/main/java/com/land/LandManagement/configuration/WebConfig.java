@@ -11,11 +11,10 @@ public class WebConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry registry) {
     registry
         .addMapping("/**") // Apply CORS to all paths
-        .allowedOriginPatterns("http://localhost:5173")
+        .allowedOrigins("http://localhost:5173")
         .allowedMethods(
-            "GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH") // Allow specific HTTP methods
+          "*") // Allow specific HTTP methods
         .allowedHeaders("*") // Allow all headers
-        .allowCredentials(true) // Allow credentials (cookies, authorization headers)
-        .maxAge(3600); // Max age for preflight requests in seconds (1 hour)
+        .allowCredentials(true); // Max age for preflight requests in seconds (1 hour)
   }
 }

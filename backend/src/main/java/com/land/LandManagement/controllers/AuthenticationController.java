@@ -45,7 +45,7 @@ public class AuthenticationController implements AuthApi { // or LoginApi
                     .secure(false) // true in production
                     .path("/")
                     .maxAge(7 * 24 * 60 * 60) // 7 days
-                    .sameSite("Strict")
+                    .sameSite("Lax")
                     .build();
 
             LoginResponseDto response = new LoginResponseDto().token(accessToken);

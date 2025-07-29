@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
         .addMapping("/**") // Apply CORS to all paths
         .allowedOrigins("*") // Allow all origins
         .allowedMethods(
-            "GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD") // Allow specific HTTP methods
+            "GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH") // Allow specific HTTP methods
         .allowedHeaders("*") // Allow all headers
         //  .allowCredentials(true) // Allow credentials (cookies, authorization headers)
         .maxAge(3600); // Max age for preflight requests in seconds (1 hour)

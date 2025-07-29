@@ -17,8 +17,8 @@ public class UserController implements UserApi {
     UserService userService;
 
     @Override
-    public ResponseEntity<UserDto> getUser(Integer id) {
-        UserDto userDto = MAPPER.map(userService.getUser(id));
+    public ResponseEntity<UserDto> getUserById(Integer id) {
+        UserDto userDto = MAPPER.map(userService.getUserById(id));
         return ResponseEntity.ok(userDto);
     }
 
@@ -29,4 +29,9 @@ public class UserController implements UserApi {
         return ResponseEntity.noContent().build();
     }
 
+    @Override
+    public ResponseEntity<UserDto> getUserByToken() {
+        UserDto targetUser = MAPPER.map(userService.getUserByToken());
+        return  ResponseEntity.ok(targetUser);
+    }
 }

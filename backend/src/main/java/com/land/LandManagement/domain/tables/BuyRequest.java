@@ -26,7 +26,7 @@ public class BuyRequest {
 
     // Seller
     @ManyToOne
-    @JoinColumn(name = "seller_id", nullable = false)
+    @JoinColumn(name = "seller_id", nullable = true)
     private User seller;
 
     // Land involved in the request

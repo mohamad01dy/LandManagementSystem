@@ -4,11 +4,12 @@ info:
   version: 1.0.0
   description: Basic API description
 
+security:
+  - bearerAuth: [ ]
+
 paths:
   /test:
     get:
-      security:
-        - bearerAuth: [ ]
       tags:
         - test
       summary: say hello
@@ -81,13 +82,28 @@ paths:
           description: User successfully updated
         '404':
           description: User to be updated not found
+    get:
+      tags:
+        - User
+      summary: Get an existing User
+      description: Get an existing User by token
+      operationId: getUserByToken
+      responses:
+        '200':
+          description: User successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
   /user/{id}:
     get:
       tags:
         - User
       summary: Get an existing User
       description: Get an existing User by its id
-      operationId: getUser
+      operationId: getUserById
       parameters:
         - in: path
           name: id
@@ -104,6 +120,201 @@ paths:
                 $ref: '#/components/schemas/User'
         '404':
           description: User not found
+  /buy-request:
+    post:
+      tags:
+        - BuyRequest
+      summary: create a buy request
+      description: the buyer creates a buy request to send it to the owner
+      operationId: createBuyRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyRequest'
+      responses:
+        '200':
+          description: the buy-request is successfully created/sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyRequest'
+        '500':
+          description: error
+  /buy-requests/sent:
+    get:
+      tags:
+        - BuyRequest
+      summary: get all sent buy-requests
+      description: return an array of buy-requests send from this user
+      operationId: getSentBuyRequests
+      responses:
+        '200':
+          description: List of sent buy-requests successfully returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BuyRequest'
+        '401':
+          description: Unauthorized – token is missing or invalid
+        '500':
+          description: Server error
+  /buy-requests/received:
+    get:
+      tags:
+        - BuyRequest
+      summary: get all received buy-requests
+      description: return an array of buy-requests received by this user
+      operationId: getReceivedBuyRequests
+      responses:
+        '200':
+          description: List of received buy-requests successfully returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BuyRequest'
+        '401':
+          description: Unauthorized – token is missing or invalid
+        '500':
+          description: Server error
+  /buy-request/{id}/status:
+    patch:
+      tags:
+        - BuyRequest
+      summary: updated buy-request status
+      description: accept or reject the sent-requests by users
+      operationId: updateRequestStatus
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [ACCEPTED, REJECTED]
+      responses:
+        '204':
+          description: Request status successfully updated
+        '404':
+          description: Request to be updated not found
+  /land:
+    post:
+      tags:
+        - Land
+      summary: create Land record
+      description: the admin creates new available unowned lands
+      operationId: createLand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/Land'
+      responses:
+        '200':
+          description: Land record successfully created
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Land'
+    get:
+      tags:
+        - Land
+      summary: Get all Land records
+      description: Retrieve a list of all lands for this user
+      operationId: getMyLands
+      responses:
+        '200':
+          description: List of land records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Land'
+  /lands:
+    get:
+      tags:
+        - Land
+      summary: Get all Land records
+      description: Retrieve a list of all available lands
+      operationId: getAvailableLands
+      responses:
+        '200':
+          description: List of land records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Land'
+  /land/{id}/ownership-history:
+    get:
+      tags:
+        - Land
+      summary: Get the ordered ownership history for a specific land
+      description: Returns the list of OwnershipHistory for the given land ID sorted by "order" attribute.
+      operationId: getOrderedOwnershipHistory
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the land
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response with sorted ownership history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OwnershipHistory'
+        '401':
+          description: Unauthorized – token is missing or invalid
+        '500':
+          description: Server error
+
+  /ownership-history/{id}:
+    get:
+      tags:
+        - OwnershipHistory
+      summary: get desired ownership history
+      description: return a specific ownership history by its Id
+      operationId: getOwnershipHistoryById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Id of the ownership history
+      responses:
+        '200':
+          description: Ownership-history successfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnershipHistory'
+        '401':
+          description: Unauthorized – token is missing or invalid
+        '500':
+          description: Server error
+
 
 components:
   securitySchemes:
@@ -131,12 +342,12 @@ components:
           type: integer
         contact:
           type: string
-        ownershipHistory:
+        ownershipHistoryIds:
           type: array
           items:
-            $ref: '#/components/schemas/OwnershipHistory'
-        owner:
-          $ref: '#/components/schemas/User'
+            type: integer
+        ownerId:
+          type: integer
     User:
       type: object
       description: User and owner of properties
@@ -151,24 +362,26 @@ components:
           type: string
         email:
           type: string
+          format: email
         password:
           type: string
-        lands:
+        landIds:
           type: array
           items:
-            $ref: '#/components/schemas/Land'
-        ownershipHistory:
+            type:
+              integer
+        ownershipHistoryIds:
           type: array
           items:
-            $ref: '#/components/schemas/OwnershipHistory'
-        sentBuyRequests:
+            type: integer
+        sentBuyRequestIds:
           type: array
           items:
-            $ref: '#/components/schemas/BuyRequest'
-        receivedBuyRequests:
+            type: integer
+        receivedBuyRequestIds:
           type: array
           items:
-            $ref: '#/components/schemas/BuyRequest'
+            type: integer
     OwnershipHistory:
       type: object
       description: owners sequence of a specific land
@@ -177,10 +390,10 @@ components:
           type: integer
         orderNumber:
           type: integer
-        owner:
-          $ref: '#/components/schemas/User'
-        land:
-          $ref: '#/components/schemas/Land'
+        ownerId:
+          type: integer
+        landId:
+          type: integer
     BuyRequest:
       type: object
       description: sent and received land buy requests
@@ -189,12 +402,12 @@ components:
           type: integer
         status:
           type: string
-        buyer:
-          $ref: '#/components/schemas/User'
-        seller:
-          $ref: '#/components/schemas/User'
-        land:
-          $ref: '#/components/schemas/Land'
+        buyerId:
+          type: integer
+        sellerId:
+          type: integer
+        landId:
+          type: integer
 
     LoginRequest:
       type: object
@@ -212,5 +425,3 @@ components:
       properties:
         token:
           type: string
-security:
-  - bearerAuth: []

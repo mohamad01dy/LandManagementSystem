@@ -64,6 +64,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginResponse'
+  /auth/refresh:
+    post:
+      tags:
+        - Auth
+      summary: refresh access token
+      description: refresh the expired access token when the refresh token is still valid
+      operationId: refreshAccessToken
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
   /user:
     put:
       tags:

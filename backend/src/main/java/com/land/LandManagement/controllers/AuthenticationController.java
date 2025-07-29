@@ -7,9 +7,13 @@ import com.land.backend.dto.LoginRequestDto;
 import com.land.backend.dto.LoginResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,17 +33,43 @@ public class AuthenticationController implements AuthApi { // or LoginApi
         try {
             UsernamePasswordAuthenticationToken authInputToken =
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
-
             authManager.authenticate(authInputToken);
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-            String token = jwtUtil.generateToken(userDetails.getUsername());
+            String accessToken = jwtUtil.generateToken(userDetails.getUsername());
+            String refreshToken = jwtUtil.generateRefreshToken(userDetails.getUsername());
 
-            LoginResponseDto response = new LoginResponseDto().token(token);
-            return ResponseEntity.ok(response);
+            // Set refresh token in HttpOnly cookie
+            ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken)
+                    .httpOnly(true)
+                    .secure(false) // true in production
+                    .path("/")
+                    .maxAge(7 * 24 * 60 * 60) // 7 days
+                    .sameSite("Strict")
+                    .build();
+
+            LoginResponseDto response = new LoginResponseDto().token(accessToken);
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
+                    .body(response);
 
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(401).build(); // Unauthorized
+            return ResponseEntity.status(401).build();
         }
+    }
+
+    @PostMapping("/auth/refresh")
+    public ResponseEntity<LoginResponseDto> refreshAccessToken(
+            @CookieValue(value = "refreshToken", required = false) String refreshToken) {
+        if (refreshToken == null || !jwtUtil.isTokenValid(refreshToken)) {
+            return ResponseEntity.status(401).build();
+        }
+
+        String username = jwtUtil.extractUsername(refreshToken);
+        String newAccessToken = jwtUtil.generateToken(username);
+        LoginResponseDto response = new LoginResponseDto().token(newAccessToken);
+
+        return ResponseEntity.ok(response);
     }
 }

@@ -11,7 +11,7 @@ import java.util.Date;
 public class JWTUtil {
 
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private final long expirationMs = 86400000; // 1 day
+    private final long expirationMs = 60 * 1000L; // 1 day
 
     public String generateToken(String username) {
         return Jwts.builder()
@@ -34,5 +34,15 @@ public class JWTUtil {
         } catch (JwtException e) {
             return false;
         }
+    }
+
+    public String generateRefreshToken(String username) {
+        long refreshExpirationMs = 120 * 1000L;
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationMs))
+                .signWith(key)
+                .compact();
     }
 }

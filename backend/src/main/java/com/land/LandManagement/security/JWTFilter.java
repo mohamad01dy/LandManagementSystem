@@ -33,7 +33,14 @@ public class JWTFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
-            username = jwtUtil.extractUsername(jwt);
+            try {
+                username = jwtUtil.extractUsername(jwt);
+            } catch (Exception e) {
+                // Invalid or expired token: respond with 401
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Invalid or expired token");
+                return; // Don't continue filter chain!
+            }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -48,4 +55,5 @@ public class JWTFilter extends OncePerRequestFilter {
 
         chain.doFilter(request, response);
     }
+
 }

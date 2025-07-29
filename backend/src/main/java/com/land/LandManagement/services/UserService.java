@@ -69,4 +69,11 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public User getUserByToken() {
+        String authenticatedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User targetUser = userRepository.findByEmail(authenticatedEmail)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return targetUser;
+    }
 }

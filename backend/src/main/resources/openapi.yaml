@@ -82,6 +82,21 @@ paths:
           description: User successfully updated
         '404':
           description: User to be updated not found
+    get:
+      tags:
+        - User
+      summary: Get an existing User
+      description: Get an existing User by token
+      operationId: getUserByToken
+      responses:
+        '200':
+          description: User successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
   /user/{id}:
     get:
       tags:

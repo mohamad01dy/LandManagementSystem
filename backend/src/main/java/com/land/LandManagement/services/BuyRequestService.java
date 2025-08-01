@@ -72,9 +72,9 @@ public class BuyRequestService {
         BuyRequest buyRequest = buyRequestRepository.getReferenceById(id);
         String authenticatedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
 
-//        if (!buyRequest.getSeller().getEmail().equals(authenticatedEmail)){
-//            throw new AccessDeniedException("You are not allowed to answer other users' requests.");
-//        }
+        if (!buyRequest.getSeller().getEmail().equals(authenticatedEmail)){
+            throw new AccessDeniedException("You are not allowed to answer other users' requests.");
+        }
 
         buyRequest.setStatus(updateRequestStatusRequestDto.getStatus().name());
         if (updateRequestStatusRequestDto.getStatus().name().equals("ACCEPTED")) {
@@ -82,7 +82,17 @@ public class BuyRequestService {
             Land land = buyRequest.getLand();
             land.setOwner(buyRequest.getBuyer());
             landRepository.save(land);
+
+            // 2. Reject all other pending requests for this land
+            List<BuyRequest> otherRequests = buyRequestRepository.findByLandIdAndStatus(land.getId(), "PENDING");
+            for (BuyRequest other : otherRequests) {
+                if (!other.getRequestId().equals(buyRequest.getRequestId())) {
+                    other.setStatus("REJECTED");
+                    buyRequestRepository.save(other);
+                }
+            }
         }
-        else {buyRequestRepository.save(buyRequest); }
+
+        buyRequestRepository.save(buyRequest);
     }
 }

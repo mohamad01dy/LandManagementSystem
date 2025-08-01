@@ -1,6 +1,8 @@
 package com.land.LandManagement.domain.tables;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -16,18 +18,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank
     @Column(name = "name")
     private String name;
 
+    @NotNull
     @Column (name = "age")
     private Integer age;
 
+    @NotBlank
     @Column (name = "address")
     private String address;
 
+    @NotBlank
     @Column (name = "email")
     private String email;
 
+    @NotBlank
     @Column (name = "password")
     private String password;
 

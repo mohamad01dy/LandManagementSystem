@@ -3,6 +3,7 @@ package com.land.LandManagement.services;
 import com.land.LandManagement.domain.tables.Land;
 import com.land.LandManagement.domain.tables.OwnershipHistory;
 import com.land.LandManagement.domain.tables.User;
+import com.land.LandManagement.repositories.BuyRequestRepository;
 import com.land.LandManagement.repositories.LandRepository;
 import com.land.LandManagement.repositories.OwnershipHistoryRepository;
 import com.land.LandManagement.repositories.UserRepository;
@@ -22,6 +23,8 @@ public class LandService {
     OwnershipHistoryRepository ownershipHistoryRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    BuyRequestRepository buyRequestRepository;
 
     public Land getLandById(Integer id) {
         return landRepository.findById(id)
@@ -42,10 +45,18 @@ public class LandService {
         String authenticatedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User targetUser = userRepository.findByEmail(authenticatedEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return  targetUser.getLands();
+        return targetUser.getLands();
     }
 
     public List<Land> getAvailableLands() {
         return landRepository.findAll();
+    }
+
+    public void deleteLand(Integer id) {
+        if (!landRepository.existsById(id)) {
+            throw new RuntimeException("Land not found with id: " + id);
+        }
+        buyRequestRepository.deleteByLandId(id);
+        landRepository.deleteById(id);
     }
 }

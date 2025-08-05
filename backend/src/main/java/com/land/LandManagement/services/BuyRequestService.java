@@ -72,6 +72,15 @@ public class BuyRequestService {
         BuyRequest buyRequest = buyRequestRepository.getReferenceById(id);
         String authenticatedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        if (buyRequest.getSeller() == null) {
+            OwnershipHistory ownershipHistory = ownershipHistoryService.createOwnershipHistory(buyRequest);
+            Land land = buyRequest.getLand();
+            land.setOwner(buyRequest.getBuyer());
+            landRepository.save(land);
+            buyRequestRepository.save(buyRequest);
+            return;
+        }
+
         if (!buyRequest.getSeller().getEmail().equals(authenticatedEmail)){
             throw new AccessDeniedException("You are not allowed to answer other users' requests.");
         }

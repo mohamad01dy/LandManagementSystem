@@ -36,7 +36,7 @@ public final class Land {
     private String contact;
 
     // Many ownership history records linked to this land
-    @OneToMany(mappedBy = "land", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "land", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OwnershipHistory> ownershipHistory;
 
     // Current owner

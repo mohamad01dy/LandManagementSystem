@@ -53,4 +53,10 @@ public class LandController implements LandApi {
         List<LandDto> availableLands = MAPPER.toDto(landService.getAvailableLands());
         return ResponseEntity.ok(availableLands);
     }
+
+    @Override
+    public ResponseEntity<Void> deleteLand(Integer id) {
+        landService.deleteLand(id);
+        return ResponseEntity.noContent().build();
+    }
 }

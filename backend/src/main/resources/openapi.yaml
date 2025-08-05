@@ -288,6 +288,27 @@ paths:
           description: Unauthorized – token is missing or invalid
         '500':
           description: Server error
+  /land/{id}:
+    delete:
+      tags:
+        - Land
+      summary: Delete Land record
+      description: Deletes a land record by its unique ID.
+      operationId: deleteLand
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The unique ID of the land to delete.
+      responses:
+        '204':
+          description: Land record successfully deleted. No content returned.
+        '404':
+          description: Land not found.
+        '400':
+          description: Invalid ID supplied.
 
   /ownership-history/{id}:
     get:

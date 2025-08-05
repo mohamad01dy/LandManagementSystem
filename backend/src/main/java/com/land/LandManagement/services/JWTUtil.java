@@ -11,7 +11,7 @@ import java.util.Date;
 public class JWTUtil {
 
     private final Key key = Keys.hmacShaKeyFor("my-very-secret-key-1234567890123456".getBytes());
-    private final long expirationMs = 60 * 1000L; // 1 day
+    private final long expirationMs = 900 * 1000L; // 1 day
 
     public String generateToken(String username) {
         return Jwts.builder()
@@ -37,7 +37,7 @@ public class JWTUtil {
     }
 
     public String generateRefreshToken(String username) {
-        long refreshExpirationMs = 120 * 1000L;
+        long refreshExpirationMs = 604800 * 1000L; //1week
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())

@@ -35,6 +35,12 @@ public final class Land {
     @Column (name = "contact")
     private String contact;
 
+    @Column (name = "latitude")
+    private Float latitude;
+
+    @Column (name = "longitude")
+    private Float longitude;
+
     // Many ownership history records linked to this land
     @OneToMany(mappedBy = "land", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OwnershipHistory> ownershipHistory;

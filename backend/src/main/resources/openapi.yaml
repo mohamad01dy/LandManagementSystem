@@ -309,6 +309,29 @@ paths:
           description: Land not found.
         '400':
           description: Invalid ID supplied.
+  /land/{id}/owner:
+    get:
+      tags:
+        - Land
+      summary: Get land owner
+      description: Get this land owner
+      operationId: getOwnerByLandId
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the land
+      responses:
+        '200':
+          description: User successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
 
   /ownership-history/{id}:
     get:
@@ -363,12 +386,20 @@ components:
           type: integer
         contact:
           type: string
+        latitude:
+          type: number
+          format: float
+        longitude:
+          type: number
+          format: float
         ownershipHistoryIds:
           type: array
           items:
             type: integer
         ownerId:
           type: integer
+        ownerName:
+          type: string
     User:
       type: object
       description: User and owner of properties

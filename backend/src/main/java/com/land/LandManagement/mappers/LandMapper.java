@@ -19,6 +19,8 @@ public interface LandMapper {
         expression = "java(entity.getOwnershipHistory() == null ? null : entity.getOwnershipHistory().stream().map(com.land.LandManagement.domain.tables.OwnershipHistory::getHistoryId).toList())")
     @Mapping(target = "ownerId",
         expression = "java(entity.getOwner() == null ? null : entity.getOwner().getId())")
+    @Mapping(target = "ownerName",
+            expression = "java(entity.getOwner() == null ? null : entity.getOwner().getName())")
     LandDto map (Land entity);
 
 
